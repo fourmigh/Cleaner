@@ -1,5 +1,7 @@
 package org.caojun.cleaner
 
+import android.content.Context
+import org.jetbrains.anko.runOnUiThread
 import java.io.File
 
 object CleanUtils {
@@ -8,12 +10,11 @@ object CleanUtils {
 
     interface Listener {
         fun onFindFolder(folder: File)
-        fun onDeleteEmptyFolder(folder: File)
-        fun onDeleteEmptyFolderFailed(folder: File)
+        fun onDeleteFile(file: File)
         fun onFinish()
     }
 
-    fun cleanEmptyFolder(file: File, listener: Listener, first: Boolean = true) {
+    fun cleanFolderOrFile(context: Context, file: File, listener: Listener, first: Boolean = true) {
         if (first) {
             if (count > 0) {
                 return
@@ -22,50 +23,54 @@ object CleanUtils {
         }
         count ++
         if (!file.exists()) {
-            finish(listener)
+            finish(context, listener)
             return
         }
         if (file.isDirectory) {
-            listener.onFindFolder(file)
+            context.runOnUiThread {
+                listener.onFindFolder(file)
+            }
             val files = file.listFiles() ?: return
             if (files.isEmpty()) {
                 if (file.delete()) {
-                    listener.onDeleteEmptyFolder(file)
-                } else {
-                    listener.onDeleteEmptyFolderFailed(file)
+                    context.runOnUiThread {
+                        listener.onDeleteFile(file)
+                    }
                 }
-                finish(listener)
+                finish(context, listener)
                 return
             }
             for (f in files) {
-                cleanEmptyFolder(f, listener, false)
+                cleanFolderOrFile(context, f, listener, false)
             }
             val filesAfter = file.listFiles() ?: return
             if (filesAfter.isEmpty()) {
                 if (file.delete()) {
-                    listener.onDeleteEmptyFolder(file)
-                } else {
-                    listener.onDeleteEmptyFolderFailed(file)
+                    context.runOnUiThread {
+                        listener.onDeleteFile(file)
+                    }
                 }
-                finish(listener)
+                finish(context, listener)
                 return
             }
         } else if (file.isFile) {
             if (file.name.endsWith(".log") || file.length() == 0L) {
                 if (file.delete()) {
-                    listener.onDeleteEmptyFolder(file)
-                } else {
-                    listener.onDeleteEmptyFolderFailed(file)
+                    context.runOnUiThread {
+                        listener.onDeleteFile(file)
+                    }
                 }
             }
         }
-        finish(listener)
+        finish(context, listener)
     }
 
-    private fun finish(listener: Listener) {
+    private fun finish(context: Context, listener: Listener) {
         count --
         if (count <= 0) {
-            listener.onFinish()
+            context.runOnUiThread {
+                listener.onFinish()
+            }
         }
     }
 }

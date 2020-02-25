@@ -63,30 +63,18 @@ class MainActivity : AppCompatActivity() {
 
     private fun doCleanFolders() {
         val root = Environment.getExternalStorageDirectory()
-        CleanUtils.cleanEmptyFolder(root, object : CleanUtils.Listener {
+        CleanUtils.cleanFolderOrFile(this, root, object : CleanUtils.Listener {
 
             override fun onFinish() {
-                runOnUiThread {
-                    tvInfo.text = "Finished"
-                }
+                tvInfo.text = "Finished"
             }
 
             override fun onFindFolder(folder: File) {
-                runOnUiThread {
-                    tvInfo.text = folder.absolutePath
-                }
+                tvInfo.text = folder.absolutePath
             }
 
-            override fun onDeleteEmptyFolder(folder: File) {
-                runOnUiThread {
-                    addSuccess(folder)
-                }
-            }
-
-            override fun onDeleteEmptyFolderFailed(folder: File) {
-//                runOnUiThread {
-//                    addFail(folder)
-//                }
+            override fun onDeleteFile(file: File) {
+                addSuccess(file)
             }
         })
     }
