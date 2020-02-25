@@ -15,9 +15,9 @@ import java.io.File
 class MainActivity : AppCompatActivity() {
 
     private val alSuccess = ArrayList<String>()
-    private val alFail = ArrayList<String>()
+//    private val alFail = ArrayList<String>()
     private var aaSuccess: ArrayAdapter<String>? = null
-    private var aaFail: ArrayAdapter<String>? = null
+//    private var aaFail: ArrayAdapter<String>? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -29,7 +29,7 @@ class MainActivity : AppCompatActivity() {
 //                .setAction("Action", null).show()
             doAsync {
                 alSuccess.clear()
-                alFail.clear()
+//                alFail.clear()
                 doCleanFolders()
             }
         }
@@ -84,9 +84,9 @@ class MainActivity : AppCompatActivity() {
             }
 
             override fun onDeleteEmptyFolderFailed(folder: File) {
-                runOnUiThread {
-                    addFail(folder)
-                }
+//                runOnUiThread {
+//                    addFail(folder)
+//                }
             }
         })
     }
@@ -107,19 +107,19 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
-    private fun addFail(file: File) {
-        alFail.add(file.absolutePath)
-        if (aaFail == null) {
-            aaFail = ArrayAdapter(
-                this,
-                android.R.layout.simple_list_item_1, alFail
-            )
-            lvSuccess.adapter = aaSuccess
-        } else {
-            aaFail?.notifyDataSetChanged()
-            if (aaFail != null) {
-                lvFail.smoothScrollToPosition(aaFail!!.count - 1)
-            }
-        }
-    }
+//    private fun addFail(file: File) {
+//        alFail.add(file.absolutePath)
+//        if (aaFail == null) {
+//            aaFail = ArrayAdapter(
+//                this,
+//                android.R.layout.simple_list_item_1, alFail
+//            )
+//            lvSuccess.adapter = aaSuccess
+//        } else {
+//            aaFail?.notifyDataSetChanged()
+//            if (aaFail != null) {
+//                lvFail.smoothScrollToPosition(aaFail!!.count - 1)
+//            }
+//        }
+//    }
 }

@@ -15,26 +15,9 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"/>
 
-    <TextView
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="@string/file_clean_success"/>
-
     <ListView
         android:id="@+id/lvSuccess"
         android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_weight="618"/>
-
-    <TextView
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="@string/file_clean_fail"/>
-
-    <ListView
-        android:id="@+id/lvFail"
-        android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_weight="382"/>
+        android:layout_height="match_parent"/>
 
 </LinearLayout>

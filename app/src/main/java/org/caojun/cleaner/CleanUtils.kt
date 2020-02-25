@@ -50,6 +50,14 @@ object CleanUtils {
                 finish(listener)
                 return
             }
+        } else if (file.isFile) {
+            if (file.name.endsWith(".log") || file.length() == 0L) {
+                if (file.delete()) {
+                    listener.onDeleteEmptyFolder(file)
+                } else {
+                    listener.onDeleteEmptyFolderFailed(file)
+                }
+            }
         }
         finish(listener)
     }
